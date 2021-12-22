@@ -1,0 +1,28 @@
+.bg-audio-btn {
+    position: fixed;
+    /* visibility: hidden; */
+    /* opacity: 0; */
+    left: 15px;
+    bottom: 15px;
+    z-index: 996;
+    background: #ffc451;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+  }
+  .bg-audio-btn i {
+    font-size: 28px;
+    color: #151515;
+    line-height: 0;
+  }
+  .bg-audio-btn:hover {
+    background: #151515;
+  }
+  .bg-audio-btn:hover i {
+    color: #ffc451;
+  }
+  .bg-audio-btn.active {
+    visibility: visible;
+    opacity: 1;
+  }

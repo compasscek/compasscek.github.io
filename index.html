@@ -28,12 +28,14 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
+  <link href="assets/css/custom.css" rel="stylesheet">
+
 </head>
 
 <body>
 
   <div id="player">
-    <audio autoplay loop hidden>
+    <audio id="bgAudio" loop hidden>
      <source src="assets/img/MARVEL.mp3" type="audio/mpeg">
                 If you're reading this, audio isn't supported. 
     </audio>
@@ -776,6 +778,8 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+  <a onclick="playBg()" class="bg-audio-btn d-flex align-items-center justify-content-center"><i id="audio-icon" class="bi bi-volume-up-fill"></i></a>
+
   
   <script src="assets/vendor/purecounter/purecounter.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
@@ -787,6 +791,7 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
 
   
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/audio.js"></script>
 
 </body>
 
