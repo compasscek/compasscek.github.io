@@ -673,13 +673,13 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
 
           <div class="col-lg-8 mt-5 mt-lg-0">
 
-            <!-- <form> -->
+            <form class="php-email-form" id="contact-form" onsubmit="return false;">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
                 </div>
                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" >
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
                 </div>
               </div>
               <div class="form-group mt-3">
@@ -690,13 +690,13 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
               </div>
               
               
-              <div class="text-center"><button onclick="submitForm()">Send Message</button></div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
               <!-- this is the div for response -->
               <div>
                 <p id="status"></p>
 
               </div>
-              <!-- </form> -->
+              </form>
 
 
           </div>
@@ -758,9 +758,15 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
           <div class="col-lg-4 col-md-6 footer-newsletter">
             <h4></h4>
             <p></p>
-            <form action="" method="post">
-              <input type="email" name="email"><input type="submit" value="Subscribe">
+            <form id="ml-form" onsubmit="return false;">
+              <input type="email" id="ml-email" name="email" required><input type="submit" value="Subscribe">
+              
+            
             </form>
+            <div>
+              <p id="ml-status"></p>
+
+            </div>
 
           </div>
 
@@ -790,7 +796,7 @@ The student-run organisation aims to equip themselves to enrich their know-how, 
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <!-- <script src="assets/vendor/php-email-form/validate.js"></script> -->
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   
