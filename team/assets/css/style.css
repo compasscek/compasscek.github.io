@@ -74,7 +74,7 @@ body,html {
 body {
   font-family: "Open Sans", sans-serif;
   color: #272829;
-  background: url("/bak2.gif");
+  background-image: url("bak2.gif");
   opacity: 85%;
   
 }
