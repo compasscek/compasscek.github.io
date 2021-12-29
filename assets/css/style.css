@@ -1104,13 +1104,13 @@ section {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 5px;
-  color: #151515;
+  color: whitesmoke
 }
 .contact .info p {
   padding: 0 0 0 60px;
   margin-bottom: 0;
   font-size: 14px;
-  color: #484848;
+  color: rgb(165, 151, 151)
 }
 .contact .info .email, .contact .info .phone {
   
