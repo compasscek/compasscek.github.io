@@ -1,0 +1,27 @@
+*{
+    scroll-behavior: smooth;
+}
+.landing-screen-btn{
+    margin-bottom: 1.5rem;
+    color: #fff !important;
+}
+.down-arrow{
+    margin-bottom: 1rem;
+}
+.landing-screen-btn:hover{
+    color: rgb(24, 24, 24)!important; 
+}
+.intro-img-2{
+    display: none;
+}
+@media (max-width: 1000px) {
+    .intro-img-1{
+        display: none;
+    }
+    .intro-img-2{
+        display: block;
+    }
+    .down-arrow{
+        display: none;
+    }
+  } 
