@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="compass11.png" type="image/icon type">
+    <link rel="stylesheet" href="curtain.css">
+    <title id="title">CE-KALLOOPARA</title>
+</head>
+
+<body style="margin: 0;">
+    
+    <div class="rxWorld">
+
+        <section class="rnOuter ">
+
+            <section class="aoTable">
+                <div class="aoTableCell">
+                  
+                   
+                    <div class="landing-section d-flex flex-column flex-wrap justify-content-center align-items-center">
+                        <h1 data-aos="fade-up" class="text-center">COMPUTER SCIENCE & ENGINEERING</h1>
+                        <p data-aos="fade-up">College Of Engineering, Kalooppara</p>
+                    </div>
+                    <!-- <img id="head" src="head2.png" style="width: 468px;" alt=""> -->
+
+                    <img style="width: 100%; height: auto;" src="" alt="">
+                    <div ontouchstart="" style="margin-top: 2rem;">
+                        <div class="button">
+                          <a href="https://compasscek.github.io/launch" id="launch-text">Open Launcher</a>
+                        </div>
+                      </div>
+
+                      <!-- <img src="p3.gif" id="loading-gif" style="mix-blend-mode: lighten; margin: auto; display: none; width: 471px; background-blend-mode: screen; background-repeat: no-repeat, repeat;" alt="loading..."> -->
+                </div>
+            </section>
+        
+        </section>
+    </div>
+    <!-- <audio autoplay id="sound" src="Hacking-Sound.mp3" preload="auto"></audio> -->
+    <script>
+        function launch() {
+            // var audio = new Audio('Hacking-Sound.mp3');
+            // audio.play();
+            setTimeout(() => { redirect(); }, 8000); //8900 is perfect
+            document.getElementById('launch-text').innerText = 'Launching..';
+            document.getElementById('loading-gif').style.display = 'block';
+            document.getElementById('head').style.width = '350px';
+            document.getElementById('title').innerText = 'launching...';
+        }
+        function redirect() {
+            window.location.assign("https://compasscek.github.io/")
+        }
+    </script>
+</body>
+
+</html>

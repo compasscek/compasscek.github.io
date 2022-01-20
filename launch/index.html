@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href=loading.csss"> -->
+    <style>
+        html, body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	position: relative;
+	overflow: hidden;
+    background: rgb(255, 255, 255);
+}
+
+.percent-text {
+	color: black;
+/* 	text-shadow: 0 -1px 1px rgba(0,0,0,.6); */
+	position: absolute; 	height: 100%; 
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'B612 Mono', monospace;
+	font-size: 55px;
+}
+
+.percent-sign {
+	font-size: .6em;
+	position: relative;
+	bottom: .1em;
+}
+
+button {
+	background-color: black;
+	border: none;
+	border-radius: 100px;
+	font-size: 24px;
+	color: white;
+	padding: .33em .67em;
+	letter-spacing: 2px;
+	font-family: "Open Sans", sans-serif;
+	transition: background-color .2s;
+}
+
+button:hover {
+	background-color: #333;
+}
+
+
+
+button span {
+	position: relative;
+	bottom: .05em;
+}
+
+.confetti {
+	height: 20px;
+	width: 10px;
+	position: absolute;
+	background: red;
+	top: 0;
+	bottom: 0;
+	left: 0; 
+	right: 0;
+	margin: auto;
+	animation-duration: 1s;
+	animation-timing-function: ease-out;
+	animation-fill-mode:both;
+}
+
+@keyframes explode-0 {
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(200px)rotateX(400deg)rotateY(600deg)rotateZ(300deg);	
+		opacity: 0;
+	}
+	
+}
+
+@keyframes explode-1 {
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(300px)rotateX(-700deg)rotateZ(200deg);	
+		opacity: 0;
+	}
+}
+
+@keyframes explode-2 {
+	50% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(-150px)rotateX(700deg)rotateY(200deg)rotateZ(-400deg);	
+		opacity: 0;
+	}
+}
+
+    </style>
+
+	<link rel="stylesheet" href="custom.css">
+</head>
+
+<body>
+
+    <div
+        style="display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; height: 100%; width: 100%;">
+
+		<div class="clg">
+			<h1>Computer Science and Engineering</h1>
+			<h2>College of Engineering Kallooppara</h2>
+		</div>
+        <div style="height: 200px; width: 200px; position: relative;">
+
+
+            <div class="percent-text">
+                <div id="percent-container" style="visibility: hidden;">
+                    <span id="percent-value">0</span><span class="percent-sign">%</span>
+
+                </div>
+            </div>
+
+            <div id="confetti-container" style="display: none"></div>
+
+            <svg id="svg" viewBox="-50 -50 100 100"
+                style="height: 100%; width: 100%; display: block; position: relative">
+
+                <mask id="m">
+                    <rect x="-50" y="-50" width="100" height="100" fill="white" />
+                    <circle id="m-circle" cx="0" cy="0" fill="black" />
+                </mask>
+
+
+                <g filter="url(#check-inset)">
+                    <circle id="track" mask="url(#m)" cx="0" cy="0" fill="#f0f0f0" />
+                </g>
+
+
+                <g filter="url(#de-highlight)">
+                    <g filter="url(#highlight)">
+                        <g filter="url(#shadow)">
+                            <circle id="full-bar" cx="0" cy="0" mask="url(#m)" fill="rgb(60,179,113)" />
+
+                            <path fill="transparent" stroke="rgb(60,179,113)" stroke-width="20" id="progress"
+                                stroke-linecap="round" />
+                        </g>
+                    </g>
+                </g>
+
+                <g>
+                    <g filter="url(#check-inset)">
+                        <path id="check" stroke="white" fill="transparent" stroke-width="10" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </g>
+                </g>
+
+            </svg>
+        </div>
+        <button id="animate" onclick="clickLaunch()"><span>Launch</span></button>
+
+		<!-- <div>
+			<button onclick="clickLaunch()">Launch</button>
+		</div> -->
+    </div>
+
+	
+<script>
+const WIDTH = 39;
+const STROKE = 10;
+
+const ELEMENT_IDS = {
+	mask: 'm-circle',
+	fullBar: 'full-bar',
+	check: 	'check',
+	track: 'track',
+	svg: 'svg',
+	progressBar: 'progress',
+	percentContainer: 'percent-container',
+	percentValue: 'percent-value',
+	animateButton: 'animate',
+	confettiContainer: 'confetti-container',
+}
+
+const ELEMENT = Object
+	.keys(ELEMENT_IDS)
+	.reduce((a,k) => {
+		a[k] = document.getElementById(ELEMENT_IDS[k]);
+		return a;
+},{})
+
+const CONFETTI_COLORS = [
+	'#f5d742',
+	'#9042f5',
+	'#f542ad',
+	'#42f2f5',
+]
+
+function makeConfetti(n){
+	for (let i=0; i<n; i++) {
+		const confettoOuter = document.createElement('div');
+		Object.assign(confettoOuter.style, {
+			transform: `rotateZ(${Math.random()*360}deg)rotateY(${Math.random()*50}deg)translateX(${Math.random()*40}px)`,
+			position: 'absolute',
+			margin: 'auto',
+			top: 0,
+			bottom: 0,
+			left: 0,
+			right: 0,
+		})
+		
+		const confetto = document.createElement('div');
+		confetto.classList.add('confetti');
+			Object.assign(confetto.style, {
+			animationName: `explode-${Math.floor(Math.random()*2)}`,
+			animationDuration: `${Math.floor(Math.random()*1400 + 400)}ms`,
+			height: `${Math.random()*15 + 5}px`,
+			width: `${Math.random()*20 + 5}px`,
+			background: CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)],
+		})
+		
+		confettoOuter.appendChild(confetto);
+		
+		ELEMENT.confettiContainer.appendChild(confettoOuter);
+	}
+}
+
+
+
+
+function easeInOutQuart(x) {
+	return x < 0.5 ? 8 * x * x * x * x : 1 - (-2 * x + 2)**4 / 2;
+}
+
+function easeInOutExpo(x) {
+return x === 0
+  ? 0
+  : x === 1
+  ? 1
+  : x < 0.5 ? 2**(20 * x - 10) / 2
+  : (2 - 2**(-20 * x + 10)) / 2;
+}
+
+
+
+
+function init(){
+	ELEMENT.mask.setAttribute('r', WIDTH-STROKE/2);
+	
+	ELEMENT.fullBar.setAttribute('r', WIDTH + STROKE/2);
+	ELEMENT.fullBar.style.visibility = 'hidden';
+	ELEMENT.check.setAttribute('transform', 'scale(.75)');
+	ELEMENT.track.setAttribute('r', WIDTH+STROKE/2);
+	
+}
+
+
+
+function el(tag, props){
+	const me = document.createElementNS('http://www.w3.org/2000/svg',tag);
+	if(props){
+		Object.keys(props).forEach(k => {
+			me.setAttribute(k, props[k]);
+		})
+	}
+	return me;
+}
+
+
+function insetShadow({
+	dx = 0,
+	dy = 0,
+	color = [0,0,0],
+	opacity = 1,
+	stdDeviation = 2,
+	id
+}){
+	const svg = el('svg');
+	svg.style.position = "absolute";
+	
+	const filter = el('filter',{
+		x: -100,
+		y: -100,
+		height: 200,
+		width: 200,
+	});
+	svg.appendChild(filter);
+	filter.id = id;
+	
+	const offset = el('feOffset', {
+		in: 'SourceGraphic',
+		out: 'shadow',
+		dx,
+		dy,
+	})
+	filter.appendChild(offset);
+	
+	const mx1 = el('feColorMatrix',{
+		out: 'shadow',
+		type: 'matrix',
+		values: `
+			0 0 0 0 0
+			0 0 0 0 0
+			0 0 0 0 0
+			0 0 0 -1 1
+		`
+	})
+	filter.appendChild(mx1);
+	
+	const mx2 = el('feColorMatrix',{
+		out: 'shadow',
+		type: 'matrix',
+		values: `
+			0 0 0 ${(color[0]/255)**2} 0
+			0 0 0 ${(color[1]/255)**2} 0
+			0 0 0 ${(color[2]/255)**2} 0
+			0 0 0 ${opacity} 0
+		`
+	})
+	filter.appendChild(mx2);
+	
+	const blur = el('feGaussianBlur',{
+		in: 'shadow',
+		out: 'shadow',
+		stdDeviation,
+	})
+	filter.appendChild(blur);
+	
+	const comp1 = el('feComposite',{
+		in: 'shadow',
+		in2: 'SourceGraphic',
+		operator: 'in',
+		out: 'shadow',
+	})
+	filter.appendChild(comp1);
+	
+	const comp2 = el('feComposite',{
+		in: 'shadow',
+		in2: 'SourceGraphic',
+		operator: 'over',
+	})
+	filter.appendChild(comp2);
+	
+	return svg;
+}
+
+function makeFilters() {
+	const shadow = insetShadow({id: 'shadow'});
+	document.body.appendChild(shadow);
+	
+	const highlight = insetShadow({
+		color: [255,255,255],
+		id: 'highlight',
+		dy: 4,
+		opacity: .4,
+		stdDeviation: 2,
+	});
+	document.body.appendChild(highlight);
+	
+	
+	const dehighlight = insetShadow({
+		color: [60,179,113],
+		id: 'de-highlight',
+		dy: 2,
+		opacity: 1,
+		stdDeviation: 1,
+	})
+	document.body.appendChild(dehighlight);
+	
+	const textInsetShadow = insetShadow({
+		color: [0,0,0],
+		id: 'text-inset-shadow',
+		dy: 2,
+		opacity: 1,
+		stdDeviation: 1,
+	})
+	document.body.appendChild(textInsetShadow);
+	
+		const textWhiteInsetShadow = insetShadow({
+		color: [0,0,0],
+		id: 'text-white-inset-shadow',
+		dy: 2,
+		opacity: .5,
+		stdDeviation: 1,
+	})
+	document.body.appendChild(textWhiteInsetShadow);
+	
+	const checkInset = insetShadow({
+		color: [0,0,0],
+		id: 'check-inset',
+		dy: 2,
+		opacity: .45,
+		stdDeviation: 2,
+	})
+	document.body.appendChild(checkInset);
+	
+}
+
+
+
+class ReappearAnimation{
+	constructor(duration){
+		this.duration = duration;
+	}
+	before(){
+		ELEMENT.svg.style.transform = "none";
+		ELEMENT.svg.style.opacity = 0;
+		ELEMENT.mask.setAttribute('r', WIDTH-STROKE/2);
+		ELEMENT.progressBar.setAttribute('d', 'M 0 0');
+		ELEMENT.fullBar.style.visibility = 'hidden';
+		ELEMENT.check.setAttribute('d', 'M 0 0');
+		ELEMENT.percentContainer.style.visibility = 'visible';
+		ELEMENT.percentContainer.style.opacity = 0;
+		ELEMENT.percentContainer.style.opacity = 0;
+		ELEMENT.animateButton.style.visibility = 'visible';
+		ELEMENT.animateButton.style.opacity = 0;
+		ELEMENT.percentValue.innerHTML = 0;
+		ELEMENT.confettiContainer.style.display = "none";
+	}
+	after(){	
+	}
+	step(p){
+		ELEMENT.svg.style.opacity = p;
+		ELEMENT.percentContainer.style.opacity = p;
+		ELEMENT.animateButton.style.opacity = p;
+	}
+	
+}
+
+
+class LoadAnimation {
+	constructor(duration){
+		this.duration = duration;
+	}
+	
+	step(p) {
+		const rad = 2*Math.PI*p;
+		const x = Math.sin(rad)*WIDTH;
+		const y = Math.cos(rad)*-WIDTH; 
+		const largeArc = p > .5 ? 1 : 0;
+		ELEMENT.percentValue.innerHTML = Math.round(p*20)*5;
+		ELEMENT.progressBar.setAttribute(
+			'd', 
+			`M 0,-${WIDTH} A ${WIDTH},${WIDTH} 0,${largeArc},1 ${x},${y}`
+		);
+	}
+	
+	before() {
+		ELEMENT.progressBar.style.visibility = "visible";
+		ELEMENT.progressBar.setAttribute('stroke-width',STROKE);
+		ELEMENT.fullBar.style.visibility = "hidden";
+		ELEMENT.check.setAttribute('d', 'M 0 0');
+		ELEMENT.mask.setAttribute('r', WIDTH-STROKE/2);
+		ELEMENT.svg.style.transform = "none";
+		ELEMENT.animateButton.style.visibility = "hidden";
+	}
+	
+	after() {
+		ELEMENT.fullBar.style.visibility = "visible";
+		ELEMENT.progressBar.style.visibility = "hidden";
+	}
+}
+
+
+class FillAnimation {
+	constructor(duration) {
+		this.duration = duration;
+		this.ease = easeInOutExpo;
+	}
+	
+	before(){
+	}
+	
+	after(){
+		ELEMENT.percentContainer.style.visibility = 'hidden';
+	}
+	
+	step(p){
+		ELEMENT.mask.setAttribute('r', (WIDTH-STROKE/2) * (1-p));
+	}
+}
+
+
+
+
+function lerp(a,b,p){
+	return {
+		x: a.x + (b.x - a.x)*p,
+		y: a.y + (b.y - a.y)*p,
+	}
+}
+
+function len(a,b){
+	return Math.sqrt((b.x-a.x)**2 + (b.y-a.y)**2);
+}
+
+
+class CheckAnimation {
+	constructor(duration) {
+		this.duration = duration;
+		
+		this.p1 = {x: -30, y: 0}
+		this.p2 = {x: -10, y: 20}
+		this.p3 = {x: 30, y: -20}
+		
+		const l1 = len(this.p1,this.p2);
+		const l2 = len(this.p2,this.p3);
+		
+		this.pivot = l1/(l1+l2);
+	}
+	
+	ease(x) {
+		return x**2;
+	}
+	
+	before() {}
+	after() {
+		ELEMENT.confettiContainer.style.display = "block";
+	}
+	
+	step(p) {
+		if (p <= this.pivot) {
+			const point = lerp(this.p1, this.p2, p/this.pivot);
+			ELEMENT.check.setAttribute(
+				'd', 
+				`M ${this.p1.x} ${this.p1.y} L ${point.x} ${point.y}`
+			)
+		} else {
+				const point = lerp(this.p2, this.p3, (p-this.pivot)/(1-this.pivot));
+			ELEMENT.check.setAttribute(
+				'd', 
+				`M ${this.p1.x} ${this.p1.y} L ${this.p2.x} ${this.p2.y} L ${point.x} ${point.y}`
+			)
+		}
+	}
+}
+
+class DropAnimation {
+	constructor(duration){
+		this.duration = duration;
+		this.svg = document.getElementById('svg');
+	}
+	
+	before(){
+		this.svg.style.position = 'absolute';
+	}
+	
+	after(){}
+	ease(x){return x**4}
+	
+	step(p){
+		this.svg.style.transform = `translateY(${1000*p}px)rotate(${200*p}deg)`;
+	}
+	
+}
+
+function animate(animator) {
+	let t0 = Date.now();
+	let frame = null;
+	animator.before()
+	
+	return new Promise(resolve => {
+		(function _s(){
+			const t1 = Date.now();
+			const p = Math.min(1, (t1-t0)/animator.duration);
+			animator.step(animator.ease ? animator.ease(p) : p);
+			if (p < 1) {
+				frame = requestAnimationFrame(_s);
+				return;
+			} 
+			animator.after();
+			resolve();
+		})();
+	})
+}
+
+
+let action = Promise.resolve();
+
+const fullAnimation = () => {
+	action = action
+			.then(() => animate(new LoadAnimation(2000))) 
+			.then(() => animate(new FillAnimation(700)))
+			.then(() => animate(new CheckAnimation(300)))
+			.then(() => animate(new DropAnimation(1500)))
+			.then(() => animate(new ReappearAnimation(300)))
+			}
+
+
+// document.getElementById('animate').onclick = fullAnimation;
+
+function clickLaunch(){
+	document.getElementById("percent-container").setAttribute("style","visibility: visible;")
+	init()
+makeFilters()
+
+fullAnimation();
+makeConfetti(100);
+setTimeout(redir, 4200);
+
+
+
+}
+function redir(){
+	console.log("ddddsds")
+	window.location= "http://compasscek.github.io/"
+}
+</script>
+</body>
+
+</html>
